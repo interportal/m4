@@ -1,5 +1,7 @@
 package md.curs.model;
 
+import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -7,12 +9,16 @@ import java.util.Objects;
  *
  * @author MG
  */
+@Entity
 public class User {
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String surname;
     private String email;
     private int age;
+
 
     public User() {
     }

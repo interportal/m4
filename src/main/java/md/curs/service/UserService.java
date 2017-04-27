@@ -1,6 +1,7 @@
 package md.curs.service;
 
 import md.curs.dao.UserJdbcDao;
+import md.curs.dao.UserJpaDao;
 import md.curs.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private UserJdbcDao userDao;
+    private UserJpaDao userDao;
 
     @Autowired
-    public UserService(UserJdbcDao userDao) {
+    public UserService(UserJpaDao userDao) {
         this.userDao = userDao;
     }
 
@@ -32,7 +33,7 @@ public class UserService {
      * @return an {@link Optional} User (present only if the user with specified id exists)
      */
     public Optional<User> getUser(long id) {
-        return userDao.getUser(id);
+        return Optional.ofNullable(userDao.getUser(id));
     }
 
     /**
@@ -62,11 +63,7 @@ public class UserService {
      */
     @Transactional
     public void saveUser(User user) {
-        if (user.getId() == null) {
-            userDao.create(user);
-        } else {
-            userDao.update(user);
-        }
+        userDao.save(user);
     }
 
     /**

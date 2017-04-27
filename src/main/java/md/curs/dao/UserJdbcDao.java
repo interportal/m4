@@ -23,7 +23,7 @@ public class UserJdbcDao {
     private DataSource dataSource;
 
     @Autowired
-    public UserJdbcDao(@Qualifier("sqLiteDataSource") DataSource dataSource) {
+    public UserJdbcDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
