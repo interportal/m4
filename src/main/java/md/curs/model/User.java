@@ -1,8 +1,12 @@
 package md.curs.model;
 
+import org.hibernate.mapping.Join;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * This is an example User model
@@ -10,6 +14,7 @@ import java.util.Objects;
  * @author MG
  */
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue
@@ -18,6 +23,15 @@ public class User {
     private String surname;
     private String email;
     private int age;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Employee employee;
+
+    @ManyToMany
+    @JoinTable(name = "user_permissions",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "permission_id")})
+    private Set<Permission> permissions;
 
 
     public User() {
@@ -82,30 +96,19 @@ public class User {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                '}';
+    public Set<Permission> getPermissions() {
+        return permissions;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return age == user.age &&
-                Objects.equals(id, user.id) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(surname, user.surname) &&
-                Objects.equals(email, user.email);
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, surname, email, age);
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }
