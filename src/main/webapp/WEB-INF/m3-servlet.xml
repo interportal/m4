@@ -10,7 +10,7 @@
     <aop:aspectj-autoproxy/>
 
     <bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="url" value="jdbc:h2:file:m4_db;DB_CLOSE_ON_EXIT=FALSE"/>
+        <property name="url" value="jdbc:h2:file:/media/markusha/Work/Projects/curs/jee/m4/m4_db;DB_CLOSE_ON_EXIT=FALSE"/>
         <property name="driverClassName" value="org.h2.Driver"/>
     </bean>
 
