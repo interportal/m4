@@ -52,7 +52,7 @@ public class UserService {
      *
      * @return minors count
      */
-    public long getMinorsCount() {
+    public Long getMinorsCount() {
         return userDao.minorsCount();
     }
 

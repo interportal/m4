@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,16 +12,6 @@
 <div class="container">
     <jsp:include page="menu.jsp"/>
 
-    <h4>Hello, ${authUser.name}</h4>
-
-    <h3>Numbers</h3>
-    <div>
-        <%-- Print numbers from 0 to 100 in step of 5 --%>
-        <c:forEach var="i" begin="0" end="100" step="5">
-            <span>${i}</span>
-        </c:forEach>
-    </div>
-
     <h3>Users List:</h3>
     <table class="table table-striped">
         <thead>
@@ -28,6 +19,9 @@
             <td>Name</td>
             <td>Surname</td>
             <td>Age</td>
+            <sec:authorize access="hasAuthority('ADMIN')">
+                <td>Actions</td>
+            </sec:authorize>
         </tr>
         </thead>
         <tbody>
@@ -45,6 +39,11 @@
                         </c:when>
                     </c:choose>
                 </td>
+                <sec:authorize url="/secure/users/edit/">
+                    <td>
+                        <a href="/secure/users/edit/${user.id}">Edit</a>
+                    </td>
+                </sec:authorize>
             </tr>
         </c:forEach>
         </tbody>

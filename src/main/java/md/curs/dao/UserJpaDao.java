@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by MG
@@ -40,6 +41,13 @@ public class UserJpaDao {
         return em.find(User.class, id);
     }
 
+    public User findByUsername(String username) {
+        return em.createQuery("FROM User u JOIN FETCH u.permissions WHERE u.username = :username", User.class)
+                .setParameter("username", username)
+                .getSingleResult();
+    }
+
+
     /**
      * creates or updates an user
      *
@@ -62,8 +70,8 @@ public class UserJpaDao {
                 .executeUpdate();
     }
 
-    public int minorsCount() {
-        return em.createQuery("SELECT COUNT(u) FROM User u WHERE u.age < 18", Integer.class)
+    public Long minorsCount() {
+        return em.createQuery("SELECT COUNT(u) FROM User u WHERE u.age < 18", Long.class)
                 .getSingleResult();
     }
 

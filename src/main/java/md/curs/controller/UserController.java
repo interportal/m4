@@ -3,6 +3,7 @@ package md.curs.controller;
 import md.curs.model.User;
 import md.curs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +18,7 @@ import java.util.Optional;
  * Created by MG
  */
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/secure/users")
 @SessionAttributes({"authUser"})
 public class UserController {
 
@@ -41,7 +42,7 @@ public class UserController {
      * @param model
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String userList(@RequestParam(value = "q", defaultValue = "") String query, Model model) {
         List<User> users = userService.findUsers(query);
         long minorsCount = userService.getMinorsCount();
@@ -59,7 +60,8 @@ public class UserController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit/{userId}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUser(@PathVariable("userId") Long userId, Model model) {
         Optional<User> user = userService.getUser(userId);
 
@@ -78,7 +80,8 @@ public class UserController {
      * @param result
      * @return
      */
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/save", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String saveUser(@ModelAttribute("user") User user, BindingResult result) {
 
         // in controller method
