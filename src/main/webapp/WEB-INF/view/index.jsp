@@ -11,9 +11,24 @@
 <body>
 <div class="container">
     <sec:authorize access="isAnonymous()">
+    
+    
+	    	<c:if test="${not empty error}">
+		    	<div class="alert alert-danger">
+		    		${error}
+		    	</div>
+	 		</c:if>
+	 		
+	 		<c:if test="${not empty msg}">
+	 			<div class="alert alert-info">
+		    		${msg}
+		    	</div>
+	 		</c:if>
+		
+	
         <div>
             <h2>Authenitcate</h2>
-            <form action="/login" method="post">
+            <form action="perform_login" method="post">
                 Username: <input type="text" name="username">
                 Password: <input type="password" name="password">
                 <input type="submit" value="login">

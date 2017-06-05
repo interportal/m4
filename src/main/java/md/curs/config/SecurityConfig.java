@@ -26,23 +26,29 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth,
-//                                UserDetailsService userDetailsService) throws Exception {
-//        auth.userDetailsService(userDetailsService);
-//    }
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth,
+                                UserDetailsService userDetailsService) throws Exception {
+        auth.userDetailsService(userDetailsService);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/secure/**").authenticated()
-                .antMatchers("/**").permitAll()
-                .and().formLogin();
+        		.antMatchers("/resources/**").permitAll() 
+        		.anyRequest().authenticated()
+        		.and()
+        		.formLogin()
+        			.loginProcessingUrl("/perform_login")
+			        .loginPage("/login")
+			        .permitAll()
+			        .and()
+			    .logout()                                    
+			        .permitAll();
     }
-
+    
     @Bean
     public UserDetailsService userDetailsService(UserJpaDao userRepo) {
         return new UserDetailsService() {

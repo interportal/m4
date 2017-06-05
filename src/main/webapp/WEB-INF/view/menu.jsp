@@ -9,11 +9,11 @@
         <li>Menu4</li>
     </ul>
 
-    <form:form action="/logout" method="post">
+    <form:form action="logout" method="post">
         <input type="submit" value="Logout">
     </form:form>
 
-    <form action="/logout" method="post">
+    <form action="logout" method="post">
         <input type="submit" value="Logout">
         <sec:csrfInput/>
     </form>
